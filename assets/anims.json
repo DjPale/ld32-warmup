@@ -1,0 +1,12 @@
+{
+	"appear" : {
+		"frame_size" : {"x":128, "y":128},
+		"frameset" : ["1-5"],
+		"speed" : 5
+	},
+	"disappear" : {
+		"frame_size" : {"x":128, "y":128},
+		"frameset" : ["5-1"],
+		"speed" : 5
+	}
+}

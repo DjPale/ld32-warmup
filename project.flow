@@ -1,0 +1,25 @@
+{
+
+  project : {
+    name : 'Pong Journey',
+    version : '0.0.1',
+    author : 'dj_pale',
+
+    app : {
+      name : 'PongJourney',
+      package : 'com.djpale.pongjourney',
+    },
+
+    build : {
+      dependencies : {
+        luxe : '*',
+      }
+    },
+
+    files : {
+      assets : 'assets/'
+    }
+
+  }
+
+}

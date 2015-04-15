@@ -1,0 +1,18 @@
+{
+	"textures" : [
+		{ "id" : "assets/background.png" },
+		{ "id" : "assets/gradient.png" },
+		{ "id" : "assets/anims.png" }
+	],
+	"shaders" : [
+	],
+	"fonts" : [
+	],
+	"sounds" : [
+	],
+	"json" : [
+		{ "id" : "assets/anims.json" }
+	],
+	"text" : [
+	]
+}
