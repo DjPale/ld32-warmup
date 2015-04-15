@@ -11,8 +11,7 @@ class PlatformerView extends State
 	var global : GlobalData;
 	var batcher : phoenix.Batcher;
 
-	var player : Sprite;
-	var player_move : SimpleMoveBehavior;
+	var player : SimpleMoveBehavior;
 
 	var debug : Text;
 
@@ -59,12 +58,12 @@ class PlatformerView extends State
     	Luxe.input.bind_key('jump', Key.key_w);
 
 
-    	player = new Sprite({
+    	var player_spr = new Sprite({
     		name: 'player',
     		size: new Vector(32, 64),
     		pos: Luxe.screen.mid
     		});
-    	player_move = player.add(new SimpleMoveBehavior());
+    	player = player_spr.add(new SimpleMoveBehavior());
 
     	new Sprite({
     		name: 'ground',
@@ -73,12 +72,33 @@ class PlatformerView extends State
     		pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 64)
     		});
 
-    	new Sprite({
-    		name: 'ground2',
-    		size: new Vector(64, 128),
+        new Sprite({
+            name: 'left_block',
+            size: new Vector(64, 128),
+            color: new luxe.Color(0.6, 0.6, 0.6, 1),
+            pos: new Vector(Luxe.screen.mid.x - 196, Luxe.screen.mid.y + 64)
+            });    	
+
+        new Sprite({
+            name: 'right_block',
+            size: new Vector(64, 128),
+            color: new luxe.Color(0.6, 0.6, 0.6, 1),
+            pos: new Vector(Luxe.screen.mid.x + 128, Luxe.screen.mid.y + 64)
+            });
+
+        new Sprite({
+    		name: 'roof',
+    		size: new Vector(128, 32),
     		color: new luxe.Color(0.6, 0.6, 0.6, 1),
-    		pos: new Vector(Luxe.screen.mid.x - 196, Luxe.screen.mid.y + 64)
+    		pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y - 96)
     		});
+
+        new Sprite({
+            name: 'air_block',
+            size: new Vector(32, 16),
+            color: new luxe.Color(0.6, 0.6, 0.6, 1),
+            pos: new Vector(Luxe.screen.mid.x - 96, Luxe.screen.mid.y - 48)
+            });
     }
 
     override function update(dt:Float)
@@ -97,11 +117,16 @@ class PlatformerView extends State
 
     	if (Luxe.input.inputdown('jump'))
     	{
-    		player_move.jump();
+    		player.jump();
     	}
 
-    	player_move.move(dir);
+    	player.move(dir);
 
-    	debug.text = 'g=${player_move.is_grounded()}, a=${player_move.acceleration} v=${player_move.velocity}';
+    	//debug.text = 'g=${player.is_grounded()}, p=${player.pos}, a=${player.acceleration}';//' v=${player.velocity}';
+
+        if (player.pos.y > Luxe.screen.h)
+        {
+            player.pos = Luxe.screen.mid;
+        }
     }
 }
