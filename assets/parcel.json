@@ -2,17 +2,21 @@
 	"textures" : [
 		{ "id" : "assets/background.png" },
 		{ "id" : "assets/gradient.png" },
-		{ "id" : "assets/anims.png" }
+		{ "id" : "assets/anims.png" },
+		{ "id" : "assets/tiles.png" },
+		{ "id" : "assets/logo.png" }
 	],
 	"shaders" : [
 	],
 	"fonts" : [
 	],
 	"sounds" : [
+		{ "id" : "assets/menu.ogg" }
 	],
 	"json" : [
 		{ "id" : "assets/anims.json" }
 	],
 	"text" : [
+		{ "id" : "assets/test.tmx" }
 	]
 }

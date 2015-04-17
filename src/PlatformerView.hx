@@ -3,6 +3,14 @@ import luxe.States;
 import luxe.Sprite;
 import luxe.Vector;
 import luxe.Input;
+import luxe.Entity;
+
+import luxe.importers.tiled.TiledMap;
+import luxe.importers.tiled.TiledObjectGroup;
+import luxe.tilemaps.Ortho;
+
+import luxe.collision.shapes.Shape;
+import luxe.collision.shapes.Polygon;
 
 import Main;
 
@@ -14,6 +22,9 @@ class PlatformerView extends State
 	var player : SimpleMoveBehavior;
 
 	var debug : Text;
+
+    var tiled : TiledMap;
+
 
 	public function new(_global:GlobalData, _batcher:phoenix.Batcher)
 	{
@@ -43,6 +54,9 @@ class PlatformerView extends State
     override function onleave<T>(ignored:T)
     {
     	trace('leave PlatformerView');
+
+        Luxe.scene.empty();
+        tiled.visual.destroy();
     } //onleave
 
     function setup()
@@ -57,48 +71,65 @@ class PlatformerView extends State
     	Luxe.input.bind_key('left', Key.key_a);
     	Luxe.input.bind_key('jump', Key.key_w);
 
+        var ship_spr = new Sprite({
+            name: 'ship',
+            size: new Vector(64, 32),
+            pos: new Vector(50, 50)
+            });
+
+        ship_spr.add(new ItemBehavior({name:'exit'}));
+
+        ship_spr.events.listen('Pickup',
+            function(e:Entity)
+            {
+
+                global.views.set('GameView');
+            }
+            );
+
 
     	var player_spr = new Sprite({
     		name: 'player',
-    		size: new Vector(32, 64),
-    		pos: Luxe.screen.mid
+    		size: new Vector(16, 32),
+    		pos: new Vector(50, 200)
     		});
-    	player = player_spr.add(new SimpleMoveBehavior());
+    	player = player_spr.add(new SimpleMoveBehavior({name:'SimpleMoveBehavior'}));
 
-    	new Sprite({
-    		name: 'ground',
-    		size: new Vector(256, 32),
-    		color: new luxe.Color(0.6, 0.6, 0.6, 1),
-    		pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 64)
-    		});
-
-        new Sprite({
-            name: 'left_block',
-            size: new Vector(64, 128),
-            color: new luxe.Color(0.6, 0.6, 0.6, 1),
-            pos: new Vector(Luxe.screen.mid.x - 196, Luxe.screen.mid.y + 64)
-            });    	
-
-        new Sprite({
-            name: 'right_block',
-            size: new Vector(64, 128),
-            color: new luxe.Color(0.6, 0.6, 0.6, 1),
-            pos: new Vector(Luxe.screen.mid.x + 128, Luxe.screen.mid.y + 64)
+        tiled = new TiledMap({
+            tiled_file_data: Luxe.resources.find_text('assets/test.tmx').text,
+            asset_path: 'assets/'
             });
 
-        new Sprite({
-    		name: 'roof',
-    		size: new Vector(128, 32),
-    		color: new luxe.Color(0.6, 0.6, 0.6, 1),
-    		pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y - 96)
-    		});
+        var map_collision : Array<Shape> = [];
+        var shape_drawer = new luxe.collision.ShapeDrawerLuxe();
 
-        new Sprite({
-            name: 'air_block',
-            size: new Vector(32, 16),
-            color: new luxe.Color(0.6, 0.6, 0.6, 1),
-            pos: new Vector(Luxe.screen.mid.x - 96, Luxe.screen.mid.y - 48)
-            });
+        tiled.display({ scale: 1, filter:phoenix.Texture.FilterType.nearest });
+        for (grp in tiled.tiledmap_data.object_groups)
+        {
+            if (grp.name == 'Collision')
+            {
+                for (obj in grp.objects)
+                {
+                    var p = obj.pos;
+
+                    if (obj.object_type == TiledObjectType.rectangle)
+                    {
+                        trace(obj.name);
+                        var s = Polygon.rectangle(p.x, p.y, obj.width, obj.height, false);
+                        map_collision.push(s);
+                        //shape_drawer.drawShape(s, new luxe.Color(1, 0, 0, 1));
+                    }
+                    else if (obj.object_type == TiledObjectType.polygon)
+                    {
+                        var s = new Polygon(obj.pos.x, obj.pos.y, obj.polyobject.points);
+                        map_collision.push(s);
+                        //shape_drawer.drawShape(s, new luxe.Color(1, 0, 0, 1));
+                    }
+                }
+            }
+        }
+
+        player.shapes = map_collision;
     }
 
     override function update(dt:Float)
@@ -126,7 +157,7 @@ class PlatformerView extends State
 
         if (player.pos.y > Luxe.screen.h)
         {
-            player.pos = Luxe.screen.mid;
+            player.pos = new Vector(50, 200);
         }
     }
 }

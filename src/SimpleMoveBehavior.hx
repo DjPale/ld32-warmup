@@ -18,6 +18,8 @@ class SimpleMoveBehavior extends Component
 	public var velocity_y_max(default,default) : Vector;
 	public var accel_walk(default,default) : Float;
 	public var velocity_jump(default,default) : Float;
+	public var shapes(default,default) : Array<Shape> = null;
+
 
 	var collider : Shape;
 	var sprite : Sprite;
@@ -76,7 +78,7 @@ class SimpleMoveBehavior extends Component
 
 	function check_collision(dx:Float, dy:Float) : Bool
 	{
-		if (collider == null) return false;
+		if (collider == null || shapes == null) return false;
 
 		var x = Math.round(dx);
 		var y = Math.round(dy);
@@ -87,23 +89,13 @@ class SimpleMoveBehavior extends Component
 
 		var collided = false;
 
-		for (e in Luxe.scene.entities)
+		for (s in shapes)
 		{
-			if (e == entity) continue;
+			var cd = Collision.test(s, collider);
 
-			if (Std.is(e, Sprite))
+			if (cd != null && cd.unitVector.y > 0)
 			{
-				var spr : Sprite = cast e;
-
-				var tmp = Polygon.rectangle(0, 0, spr.size.x, spr.size.y, true);
-				tmp.position = spr.pos;
-
-				var cd = Collision.test(tmp, collider);
-
-				if (cd != null && cd.unitVector.y > 0)
-				{
-					collided = true;
-				}
+				collided = true;
 			}
 		}
 
@@ -112,7 +104,7 @@ class SimpleMoveBehavior extends Component
 
 	public function move_by(x:Float, y:Float) : Bool
 	{
-		if (collider == null) return false;
+		if (collider == null || shapes == null) return false;
 		if (x == 0 && y == 0) return false;
 
 		var dx = x;
@@ -127,40 +119,31 @@ class SimpleMoveBehavior extends Component
 #end
 		var collided = false;
 
-		for (e in Luxe.scene.entities)
+		for (s in shapes)
 		{
-			if (e == entity) continue;
-
-			if (Std.is(e, Sprite))
-			{
-				var spr : Sprite = cast e;
-
-				var tmp = Polygon.rectangle(0, 0, spr.size.x, spr.size.y, true);
-				tmp.position = spr.pos;
 #if debug
-				shape_drawer.drawShape(tmp, new Color(1,0,0,1), true);
+			shape_drawer.drawShape(tmp, new Color(1,0,0,1), true);
 #end
-				var cd = Collision.test(tmp, collider);
+			var cd = Collision.test(s, collider);
 
-				if (cd != null)
+			if (cd != null)
+			{
+				var sep = cd.separation;
+				// adjacent but not overlapping
+				if (cd.overlap == 0)
 				{
-					var sep = cd.separation;
-					// adjacent but not overlapping
-					if (cd.overlap == 0)
-					{
-						if (cd.unitVector.x > 0 && dx > 0) dx = 0;
-						if (cd.unitVector.y < 0 && dy < 0) dy = 0;
-						if (cd.unitVector.x < 0 && dx < 0) dx = 0;
-						if (cd.unitVector.y > 0 && dy > 0) dy = 0;
-						continue;
-					}
-
-					// correction needed
-					pos.x -= sep.x;
-					pos.y -= sep.y;
-
-					collided = true;
+					if (cd.unitVector.x > 0 && dx > 0) dx = 0;
+					if (cd.unitVector.y < 0 && dy < 0) dy = 0;
+					if (cd.unitVector.x < 0 && dx < 0) dx = 0;
+					if (cd.unitVector.y > 0 && dy > 0) dy = 0;
+					continue;
 				}
+
+				// correction needed
+				pos.x -= sep.x;
+				pos.y -= sep.y;
+
+				collided = true;
 			}
 		}
 
