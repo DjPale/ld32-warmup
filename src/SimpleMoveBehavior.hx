@@ -4,6 +4,7 @@ import luxe.Sprite;
 import luxe.Color;
 import luxe.utils.Maths;
 import luxe.collision.Collision;
+import luxe.collision.data.ShapeCollision;
 import luxe.collision.shapes.Shape;
 import luxe.collision.shapes.Polygon;
 
@@ -91,7 +92,7 @@ class SimpleMoveBehavior extends Component
 
 		for (s in shapes)
 		{
-			var cd = Collision.test(s, collider);
+			var cd = Collision.shapeWithShape(s, collider);
 
 			if (cd != null && cd.unitVector.y > 0)
 			{
@@ -101,6 +102,8 @@ class SimpleMoveBehavior extends Component
 
 		return collided;
 	}
+
+	public var __cd : ShapeCollision;
 
 	public function move_by(x:Float, y:Float) : Bool
 	{
@@ -115,19 +118,21 @@ class SimpleMoveBehavior extends Component
 		collider.position.y += dy;
 
 #if debug
-		shape_drawer.drawShape(tmp, new Color(1,0,0,1), true);
+		shape_drawer.drawShape(collider);
 #end
 		var collided = false;
 
 		for (s in shapes)
 		{
 #if debug
-			shape_drawer.drawShape(tmp, new Color(1,0,0,1), true);
+			shape_drawer.drawShape(s);
 #end
-			var cd = Collision.test(s, collider);
+			var cd = Collision.shapeWithShape(s, collider);
 
 			if (cd != null)
 			{
+				__cd = cd;
+
 				var sep = cd.separation;
 				// adjacent but not overlapping
 				if (cd.overlap == 0)
@@ -190,6 +195,8 @@ class SimpleMoveBehavior extends Component
 
 	override function update(dt:Float)
 	{
+		__cd = null;
+
 		update_movement(dt);
 	}
 }

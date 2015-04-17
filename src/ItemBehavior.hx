@@ -48,7 +48,7 @@ class ItemBehavior extends Component
 
 		if (player != null && collider != null)
 		{
-			if (Collision.test(player, collider) != null)
+			if (Collision.shapeWithShape(player, collider) != null)
 			{
 				entity.events.fire('Pickup', entity);
 			}

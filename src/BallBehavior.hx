@@ -97,7 +97,7 @@ class BallBehavior extends Component
 
 				actor.collider.position = e.pos;
 
-				var collision = Collision.test(collider, actor.collider);
+				var collision = Collision.shapeWithShape(collider, actor.collider);
 
 				if (collision != null)
 				{

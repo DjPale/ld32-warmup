@@ -63,7 +63,7 @@ class PlatformerView extends State
     {
     	debug = new Text({
     		name: 'DebugText',
-    		point_size: 30,
+    		point_size: 12,
     		pos: new Vector(30,30)
     		});
 
@@ -74,7 +74,7 @@ class PlatformerView extends State
         var ship_spr = new Sprite({
             name: 'ship',
             size: new Vector(64, 32),
-            pos: new Vector(50, 50)
+            pos: new Vector(50, 70)
             });
 
         ship_spr.add(new ItemBehavior({name:'exit'}));
@@ -154,6 +154,15 @@ class PlatformerView extends State
     	player.move(dir);
 
     	//debug.text = 'g=${player.is_grounded()}, p=${player.pos}, a=${player.acceleration}';//' v=${player.velocity}';
+        if (player.__cd != null) 
+        {
+            debug.text = 'uv=' + player.__cd.unitVector + ' sep=' + player.__cd.separation;
+        }
+        else
+        {
+            debug.text = '';
+        }
+
 
         if (player.pos.y > Luxe.screen.h)
         {

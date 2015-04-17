@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" backgroundcolor="#808080" nextobjectid="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" backgroundcolor="#808080" nextobjectid="48">
  <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32">
   <image source="tiles.png" width="192" height="96"/>
   <tile id="0">
@@ -48,10 +48,9 @@
   <object id="15" name="green_lower" x="32" y="352" width="96" height="32"/>
   <object id="16" name="mid_lower" x="192" y="352" width="224" height="32"/>
   <object id="20" x="320" y="224" width="64" height="32"/>
-  <object id="25" x="416" y="288">
-   <polygon points="0,0 160,0 160,160 64,160 64,32 0,32"/>
-  </object>
-  <object id="30" x="192" y="128" width="96" height="96"/>
-  <object id="31" x="288" y="160" width="32" height="32"/>
+  <object id="42" x="256" y="160" width="64" height="32"/>
+  <object id="43" x="192" y="128" width="96" height="96"/>
+  <object id="46" x="480" y="288" width="96" height="160"/>
+  <object id="47" x="416" y="288" width="96" height="32"/>
  </objectgroup>
 </map>
