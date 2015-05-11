@@ -36,7 +36,7 @@ class BallBehavior extends Component
 	{
 		light = new Sprite({
 			name: 'ball.gradient',
-			texture: Luxe.resources.find_texture('assets/gradient.png'),
+			texture: Luxe.resources.texture('assets/gradient.png'),
 			parent: entity,
 			color: new luxe.Color(0.8, 0.9, 0.1),
 			depth: 10,

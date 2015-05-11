@@ -116,14 +116,14 @@ class GameView extends State
 
     	bg = new Sprite({
     		name: 'bg',
-    		texture: Luxe.resources.find_texture('assets/background.png'),
+    		texture: Luxe.resources.texture('assets/background.png'),
     		size: new Vector(Luxe.screen.w, Luxe.screen.w / ratio),
     		centered: false,
     		depth: 0
     		});
 
     	//bg.texture.filter = phoenix.Texture.FilterType.nearest;
-    	bg.texture.clamp = phoenix.Texture.ClampType.repeat;
+    	bg.texture.clamp_s = bg.texture.clamp_t = phoenix.Texture.ClampType.repeat;
 
     	explosions = new Pool<ParticleSystem>(4, create_explosion);
 

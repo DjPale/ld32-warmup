@@ -113,7 +113,7 @@ class EnemyController
     {
     	var e_spr = new Sprite({
     		name: 'Enemy.$num',
-    		texture: Luxe.resources.find_texture('assets/anims.png'),
+    		texture: Luxe.resources.texture('assets/anims.png'),
     		size: new Vector(128,128),
     		//color: new Color().rgb(0x9882AC),
     		depth: 100,
@@ -130,7 +130,7 @@ class EnemyController
     	e_spr.add(new TrailBehavior(new Vector(64,64), new luxe.Color().rgb(0x556270), 5, {name:'TrailBehavior'}));
 
     	var anim : SpriteAnimation = e_spr.add(new SpriteAnimation({name:'SpriteAnimation'}));
- 		var a = Luxe.resources.find_json('assets/anims.json');
+ 		var a = Luxe.resources.json('assets/anims.json').asset.json;
     	anim.add_from_json_object(a.json);
 
     	var enemy = e_spr.add(new EnemyBehavior({name:'EnemyBehavior'}));

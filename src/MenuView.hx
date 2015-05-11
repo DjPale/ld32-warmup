@@ -62,7 +62,7 @@ class MenuView extends State
     		name: 'logo',
     		pos: new Vector(Luxe.screen.mid.x, 200),
     		centered: true,
-    		texture: Luxe.resources.find_texture('assets/logo.png')
+    		texture: Luxe.resources.texture('assets/logo.png')
     		});
 
     	logo.color.a = 0;
@@ -70,14 +70,14 @@ class MenuView extends State
 
 	    bg = new Sprite({
 		name: 'bg',
-		texture: Luxe.resources.find_texture('assets/background.png'),
+		texture: Luxe.resources.texture('assets/background.png'),
 		size: new Vector(Luxe.screen.w, Luxe.screen.w / (Luxe.screen.w / Luxe.screen.h)),
 		centered: false,
 		depth: 0
 		});
 
 		//bg.texture.filter = phoenix.Texture.FilterType.nearest;
-		bg.texture.clamp = phoenix.Texture.ClampType.repeat;
+		bg.texture.clamp_s = bg.texture.clamp_t = phoenix.Texture.ClampType.repeat;
 		bg.color.a = 0;
 
 		bg.color.tween(3.0, { a: 1.0 });

@@ -11,7 +11,7 @@
 	"fonts" : [
 	],
 	"sounds" : [
-		{ "id" : "assets/menu.ogg" }
+		{ "id" : "assets/menu.ogg", "name" : "menu" }
 	],
 	"json" : [
 		{ "id" : "assets/anims.json" }

@@ -17,6 +17,8 @@ class Main extends luxe.Game
     {
         config.window.title = 'Pong Journey';
 
+        config.preload.jsons.push({id: 'assets/parcel.json'});
+
         return config;
     }
 
@@ -35,30 +37,26 @@ class Main extends luxe.Game
 
     function load_complete(_)
     {
-        var enemies = Luxe.resources.find_texture('assets/anims.png');
-        enemies.filter = phoenix.Texture.FilterType.nearest;
+        var enemies = Luxe.resources.texture('assets/anims.png');
+        enemies.filter_min = enemies.filter_mag = phoenix.Texture.FilterType.nearest;
 
         setup();
     }
 
     override function ready()
     {
-        Luxe.loadJSON('assets/parcel.json', function(json_asset) 
-            {
-                var preload = new luxe.Parcel();
-                preload.from_json(json_asset.json);
+        var preload = new luxe.Parcel();
+        preload.from_json(Luxe.resources.json('assets/parcel.json').asset.json);
 
-                new luxe.ParcelProgress({
-                    parcel: preload,
-                    background: new luxe.Color(0, 0, 0, 0.85),
-                    oncomplete: load_complete,
-                    bar: new luxe.Color(1, 1, 1, 1),
-                    bar_border: new luxe.Color(1, 1, 1, 1),
-                    });
+        new luxe.ParcelProgress({
+            parcel: preload,
+            background: new luxe.Color(0, 0, 0, 0.85),
+            oncomplete: load_complete,
+            bar: new luxe.Color(1, 1, 1, 1),
+            bar_border: new luxe.Color(1, 1, 1, 1),
+            });
 
-                preload.load();
-            }
-        );
+        preload.load();
     } //ready
 
     override function onkeyup( e:KeyEvent ) 

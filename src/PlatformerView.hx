@@ -95,8 +95,10 @@ class PlatformerView extends State
     		});
     	player = player_spr.add(new SimpleMoveBehavior({name:'SimpleMoveBehavior'}));
 
+        var tiled_data = Luxe.resources.text('assets/test.tmx');
+
         tiled = new TiledMap({
-            tiled_file_data: Luxe.resources.find_text('assets/test.tmx').text,
+            tiled_file_data: tiled_data.asset.text,
             asset_path: 'assets/'
             });
 
